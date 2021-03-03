@@ -13,11 +13,8 @@
 
 /* Data structure declarations */
 
-/* Linked list element (You shouldn't need to change this) */
+/* Linked list element */
 typedef struct ELE {
-    /* Pointer to array holding string.
-     * This array needs to be explicitly allocated and freed
-     */
     char *value;
     struct ELE *next;
 } list_ele_t;
@@ -25,10 +22,7 @@ typedef struct ELE {
 /* Queue structure */
 typedef struct {
     list_ele_t *head; /* Linked list of elements */
-    /* TODO: You will need to add more fields to this structure
-     *        to efficiently implement q_size and q_insert_tail.
-     */
-    /* TODO: Remove the above comment when you are about to implement. */
+    int size; /* Size of queue */ 
 } queue_t;
 
 /* Operations on queue */
