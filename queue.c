@@ -57,7 +57,7 @@ bool q_insert_head(queue_t *q, char *s)
         free(newh);
         return false;
     }
-    strncpy(newh->value, s, strlen(s));
+    strncpy(newh->value, s, strlen(s) + 1);
 
     newh->next = q->head;
     if (q->head) {
@@ -94,7 +94,7 @@ bool q_insert_tail(queue_t *q, char *s)
         free(newt);
         return false;
     }
-    strncpy(newt->value, s, strlen(s));
+    strncpy(newt->value, s, strlen(s) + 1);
 
     if (!q->head) {
         newt->next = NULL;
