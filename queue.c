@@ -71,6 +71,7 @@ bool q_insert_head(queue_t *q, char *s)
     if (q->head) {
         q->head = newh;
     } else {
+        newh->next = NULL;
         q->head = newh;
         q->tail = newh;
     }
@@ -152,7 +153,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 int q_size(queue_t *q)
 {
     if (!q) {
-        return -1;
+        return 0;
     }
     return q->size;
 }
@@ -183,6 +184,65 @@ void q_reverse(queue_t *q)
     return;
 }
 
+/* Get the middle node
+ * The original list must be at least length of 2
+ */
+void get_middle(list_ele_t *head, list_ele_t **l, list_ele_t **r)
+{
+    list_ele_t *fast = head->next, *slow = head;
+
+    while (fast->next && fast->next->next) {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    *l = head;
+    *r = slow->next;
+    slow->next = NULL;
+
+    return;
+}
+
+void merge_sort(list_ele_t **head)
+{
+    // Early return
+    if (!(*head) || !(*head)->next) {
+        return;
+    }
+
+    // Split list
+    list_ele_t *l = NULL, *r = NULL;
+    get_middle(*head, &l, &r);
+
+    merge_sort(&l);
+    merge_sort(&r);
+
+    // merge left and right
+    list_ele_t *done;
+    if (strcmp(l->value, r->value) < 0) {
+        done = l;
+        l = l->next;
+    } else {
+        done = r;
+        r = r->next;
+    }
+
+    *head = done;
+    while (l && r) {
+        if (strcmp(l->value, r->value) < 0) {
+            done->next = l;
+            l = l->next;
+        } else {
+            done->next = r;
+            r = r->next;
+        }
+        done = done->next;
+    }
+
+    done->next = l ? l : r;
+    return;
+}
+
 /*
  * Sort elements of queue in ascending order
  * No effect if q is NULL or empty. In addition, if q has only one
@@ -190,6 +250,10 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (!q || q->size <= 1) {
+        return;
+    }
+
+    merge_sort(&(q->head));
+    return;
 }
