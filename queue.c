@@ -255,5 +255,13 @@ void q_sort(queue_t *q)
     }
 
     merge_sort(&(q->head));
+
+    // Update q->tail
+    list_ele_t *temp = q->head;
+    while (temp->next) {
+        temp = temp->next;
+    }
+    q->tail = temp;
+
     return;
 }
